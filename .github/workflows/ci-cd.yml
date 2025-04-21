@@ -1,4 +1,4 @@
-name: Build and Deploy Chatbot
+name: CI Pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,20 +22,10 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Build Docker image
-      run: docker build -t chatbot-app .
+    - name: Run flake8 linting
+      run: |
+        pip install flake8
+        flake8 . --max-line-length=80
 
     - name: Run tests (optional)
       run: echo "Add your tests here!"
-
-    - name: Push to DockerHub (optional)
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker tag chatbot-app $DOCKER_USERNAME/chatbot-app:latest
-        docker push $DOCKER_USERNAME/chatbot-app:latest
-
-    - name: Deploy (optional)
-      run: echo "Deploy steps here"
