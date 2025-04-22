@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.8' // Use a Python Docker image
+            args '-v $HOME/.m2:/root/.m2' // Optional: mount any required volumes
+        }
+    }
 
     environment {
         DOCKER_IMAGE = "chatbot-app"
