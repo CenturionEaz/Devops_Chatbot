@@ -13,14 +13,6 @@ pipeline {
             }
         }
 
-        stage('Install Requirements') {
-            steps {
-                sh '''
-                    docker run --rm -v "$PWD":/app -w /app python:3.8 pip install -r requirements.txt
-                '''
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh '''
