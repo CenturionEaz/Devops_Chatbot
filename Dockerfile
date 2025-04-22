@@ -1,20 +1,20 @@
-# Use official Python image
-FROM python:3.12-slim
+# Use a base image
+FROM python:3.8-slim
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements first to leverage Docker cache for dependencies
-COPY requirements.txt /app/requirements.txt
+# Copy the requirements file to the container
+COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the code
-COPY . /app
+# Copy the application code to the container
+COPY . .
 
-# Expose Flask default port
+# Expose the application port
 EXPOSE 5000
 
-# Run the Flask app
-CMD ["python", "web_chatbot.py"]
+# Define the command to run the app
+CMD ["python", "app.py"]

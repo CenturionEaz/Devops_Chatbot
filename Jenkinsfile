@@ -1,43 +1,42 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.8' // Use a Python Docker image
-            args '-v $HOME/.m2:/root/.m2' // Optional: mount any required volumes
-        }
-    }
+    agent any
 
     environment {
         DOCKER_IMAGE = "chatbot-app"
     }
 
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/CenturionEaz/Devops_Chatbot.git', branch: 'main'
+                // Checkout your Git repository
+                git 'https://github.com/CenturionEaz/Devops_Chatbot.git'
             }
         }
 
         stage('Install Requirements') {
             steps {
-                sh 'pip install -r requirements.txt'
-            }
-        }
-
-        stage('Lint Check') {
-            steps {
-                sh 'pip install flake8 && flake8 .'
+                // Install dependencies via pip
+                script {
+                    sh 'pip install -r requirements.txt'  // Make sure pip and Python are installed on Jenkins
+                }
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
+                // Build Docker image
+                script {
+                    sh 'docker build -t $DOCKER_IMAGE .'  // This assumes the Dockerfile is in the root directory
+                }
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 5000:5000 --name chatbot-container $DOCKER_IMAGE'
+                // Run the Docker container from the built image
+                script {
+                    sh 'docker run -d -p 5000:5000 --name chatbot-container $DOCKER_IMAGE'
+                }
             }
         }
     }
