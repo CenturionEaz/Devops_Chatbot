@@ -1,0 +1,37 @@
+ pipeline {
+  agent any
+
+  environment {
+    ENV_FILE = ".env"
+  }
+
+  stages {
+    stage('Clone Repo') {
+      steps {
+        git 'https://github.com/CenturionEaz/Devops_Chatbot.git'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t chatbot-app .'
+      }
+    }
+
+    stage('Stop Old Container') {
+      steps {
+        sh '''
+        docker stop chatbot-container || true
+        docker rm chatbot-container || true
+        '''
+      }
+    }
+
+    stage('Run New Container') {
+      steps {
+        sh 'docker run -d --name chatbot-container -p 5000:5000 --env-file .env chatbot-app'
+      }
+    }
+  }
+}
+
