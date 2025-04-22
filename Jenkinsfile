@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your Git repository
-                git 'https://github.com/CenturionEaz/Devops_Chatbot.git'
+                git branch: 'main', url: 'https://github.com/CenturionEaz/Devops_Chatbot.git'
             }
         }
 
