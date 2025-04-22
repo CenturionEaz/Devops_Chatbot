@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git 'https://github.com/CenturionEaz/Devops_Chatbot.git'
+                git url: 'https://github.com/CenturionEaz/Devops_Chatbot.git', branch: 'main'
             }
         }
 
